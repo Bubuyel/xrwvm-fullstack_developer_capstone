@@ -1,0 +1,45 @@
+name: CI Lint Checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  lint_python:
+    name: Lint Python files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install flake8
+        run: pip install flake8
+
+      - name: Run flake8 on the Django app
+        run: flake8 server --exclude migrations,node_modules,frontend --max-line-length=120 --count --show-source --statistics
+
+  lint_js:
+    name: Lint JavaScript files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install JSHint
+        run: npm install -g jshint
+
+      - name: Run JSHint on the dealership service
+        run: jshint --config .jshintrc server/database/app.js server/database/dealership.js server/database/review.js server/database/inventory.js

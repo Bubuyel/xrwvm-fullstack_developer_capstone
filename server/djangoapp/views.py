@@ -40,6 +40,7 @@ def login_user(request):
         data = {"userName": username, "status": "Authenticated"}
     return JsonResponse(data)
 
+
 # Create a `logout_request` view to handle sign out request
 def logout_request(request):
     logout(request)  # Terminate the user session
@@ -80,6 +81,7 @@ def registration(request):
 
     data = {"userName": username, "error": "Already Registered"}
     return JsonResponse(data)
+
 
 # Return the car makes and models, populating the database the first time
 def get_cars(request):
